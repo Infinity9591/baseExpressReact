@@ -1,0 +1,18 @@
+SITE
+	LOGIN
+		POST /site/login
+			{
+				"username" : <username>,
+				"password" : <password>
+			}
+	GETPERSONALINFORMATION
+		GET /site/getPersonalInformation
+
+ACCOUNT
+	GETACCOUNTS
+		GET /account
+
+USER
+	GETUSERS
+		GET /user
+

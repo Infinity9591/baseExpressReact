@@ -1,0 +1,13 @@
+.ant-menu-horizontal > .ant-menu-item::after
+.ant-menu-title-content {
+    color: #ffffff; /* Đổi màu chữ thành trắng */
+}
+.ant-menu-title-content:hover {
+    color: #ffffff; /* Đổi màu chữ thành trắng */
+}
+.ant-menu-dark .ant-menu-submenu-selected>.ant-menu-submenu-title{
+     color: #ffffff; /* Đổi màu chữ thành trắng */
+}
+.ant-menu-dark .ant-menu-submenu-selected>.ant-menu-submenu-title:hover{
+    color: #ffffff; /* Đổi màu chữ thành trắng */
+}

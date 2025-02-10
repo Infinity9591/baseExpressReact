@@ -1,0 +1,10 @@
+const express = require('express');
+const router = express.Router();
+const roleController = require('../../app/controllers/RoleController');
+const authorize = require('../../middleware/authorization');
+
+router.get('/', authorize('read', 'role'), roleController.index);
+router.post('/create', authorize('create', 'role'), roleController.create);
+router.post('/update', authorize('update', 'role'), roleController.update);
+
+module.exports = router;

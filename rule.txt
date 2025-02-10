@@ -1,0 +1,5 @@
+file_name :
+	controllers : PascalCase
+	others : camelCase
+
+update database first
