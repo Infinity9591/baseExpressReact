@@ -129,7 +129,11 @@ const changePassword = () => {
                 </Form.Item>
 
                 <Form.Item label={null}>
-                    <Button type="primary" htmlType="submit" onClick={handleSubmit}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        onClick={handleSubmit}
+                    >
                         Submit
                     </Button>
                 </Form.Item>

@@ -9,12 +9,44 @@ const Index = () => {
     const [cookie, setCookie, removeCookie] = useCookies();
     const navigate = useNavigate();
     const [dataAccounts, setDataAccounts] = useState([]);
+    const [count, setCount] = useState(0);
 
     const [loading, setLoading] = useState(false);
 
-    const handleDelete = () => {
-
-    }
+    const handleDelete = (id, is_active) => {
+        try {
+            if (is_active === 1){
+                axios.post('/account/deactive', {id : id}, {
+                    headers: {
+                        Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
+                    },
+                }).then(() => {
+                    notification.success({
+                        message: 'Success',
+                        // description: 'Failed to fetch user data',
+                    });
+                    setCount(prev => prev + 1);
+                });
+            } else if (is_active === 0){
+                axios.post('/account/active', {id : id}, {
+                    headers: {
+                        Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
+                    },
+                }).then(() => {
+                    notification.success({
+                        message: 'Success',
+                        // description: 'Failed to fetch user data',
+                    });
+                    setCount(prev => prev + 1);
+                });
+            }
+        } catch (e) {
+            notification.error({
+                message: 'Error',
+                // description: 'Failed to fetch user data',
+            });
+        }
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,7 +69,7 @@ const Index = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [count]);
     return (
         <>
             <Spin spinning={loading}>
@@ -90,7 +122,7 @@ const Index = () => {
                                         Detail
                                     </Button>
                                     <Button onClick={() => {}}>Edit</Button>
-                                    <Button onClick={() => {}}>Delete</Button>
+                                    <Button onClick={() => { handleDelete(record.id, record.is_active)}}>{record.is_active === 1 ? "Deactive" : "Active"}</Button>
                                 </Space>
                             ),
                         },

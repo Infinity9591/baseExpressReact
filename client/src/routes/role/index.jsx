@@ -70,21 +70,18 @@ const Index = () => {
                 );
                 setDataTableLogs(responseTableLogs.data);
 
-                await axios.get(
-                    '/site/getPersonalInformation',
-                    {
-                        headers: {
-                            Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                        },
+                await axios.get('/site/getPersonalInformation', {
+                    headers: {
+                        Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
                     },
-                );
+                });
                 // setDataPersonal(responsePersonalData.data);
             } catch (error) {
                 // notification.error({
                 //     message: 'Error',
                 //     description: 'Failed to fetch user data',
                 // });
-                navigate('/site/error')
+                navigate('/site/error');
             } finally {
                 setLoading(false);
             }
