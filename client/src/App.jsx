@@ -40,7 +40,7 @@ const App = () => {
                     path="/*"
                     element={
                         token ? (
-                            <Index/>
+                            <Index />
                         ) : (
                             <Navigate to="/site/login" replace />
                         )

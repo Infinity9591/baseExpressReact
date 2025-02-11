@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-    Button, Divider,
+    Button,
+    Divider,
     notification,
     Popconfirm,
     Space,
@@ -15,7 +16,18 @@ const Index = () => {
     const [cookie, setCookie, removeCookie] = useCookies();
     const [dataUsers, setDataUsers] = useState([]);
     const [dataAccounts, setDataAccounts] = useState([]);
+    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
+    const [refreshKey, setRefreshKey] = useState(0);
     const [loading, setLoading] = useState(false);
+
+    const showModalCreate = () => {
+        setIsModalCreateOpen(true);
+    };
+
+    const handleCancelCreate = () => {
+        setIsModalCreateOpen(false);
+        setRefreshKey((prevKey) => prevKey + 1);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,7 +55,7 @@ const Index = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [refreshKey]);
     return (
         <>
             <Divider
@@ -53,6 +65,19 @@ const Index = () => {
             >
                 Quản lý nhân viên
             </Divider>
+            <Button
+                onClick={() => {
+                    showModalCreate();
+                }}
+            >
+                Thêm chức vụ
+            </Button>
+            <Divider
+                style={{
+                    borderColor: '#7cb305',
+                    borderWidth: '1px',
+                }}
+            />
             <Spin spinning={loading}>
                 <Table
                     dataSource={dataUsers}

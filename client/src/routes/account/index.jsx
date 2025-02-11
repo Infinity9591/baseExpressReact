@@ -186,6 +186,12 @@ const Index = () => {
                     Thêm tài khoản
                 </Button>
             ) : null}
+            <Divider
+                style={{
+                    borderColor: '#7cb305',
+                    borderWidth: '1px',
+                }}
+            />
             <Spin spinning={loading}>
                 <Table
                     dataSource={dataAccounts}

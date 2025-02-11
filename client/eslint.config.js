@@ -32,6 +32,7 @@ export default [
             'no-unused-vars': 'off',
             'no-empty': 'off',
             'no-dupe-else-if': 'off',
+            'react/prop-types': 'off',
             'react-refresh/only-export-components': [
                 'warn',
                 { allowConstantExport: true },

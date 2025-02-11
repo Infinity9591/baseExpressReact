@@ -112,6 +112,12 @@ const Index = () => {
             >
                 Thêm chức vụ
             </Button>
+            <Divider
+                style={{
+                    borderColor: '#7cb305',
+                    borderWidth: '1px',
+                }}
+            />
             <Spin spinning={loading}>
                 <Table
                     dataSource={dataRoles}
