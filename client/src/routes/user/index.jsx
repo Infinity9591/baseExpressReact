@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, notification, Space, Spin, Table, Tag } from 'antd';
+import {
+    Button, Divider,
+    notification,
+    Popconfirm,
+    Space,
+    Spin,
+    Table,
+    Tag,
+} from 'antd';
 import axios from '../../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
 
@@ -38,6 +46,13 @@ const Index = () => {
     }, []);
     return (
         <>
+            <Divider
+                style={{
+                    borderColor: '#7cb305',
+                }}
+            >
+                Quản lý nhân viên
+            </Divider>
             <Spin spinning={loading}>
                 <Table
                     dataSource={dataUsers}
@@ -69,16 +84,16 @@ const Index = () => {
                             dataIndex: 'address',
                             key: 'address',
                         },
-                        {
-                            title: 'Account',
-                            dataIndex: 'account_id',
-                            key: 'account_id',
-                            render: (text, record, index) =>
-                                dataAccounts.filter(
-                                    (dataAccount) =>
-                                        dataAccount.id === record.account_id,
-                                )[0]?.username,
-                        },
+                        // {
+                        //     title: 'Account',
+                        //     dataIndex: 'account_id',
+                        //     key: 'account_id',
+                        //     render: (text, record, index) =>
+                        //         dataAccounts.filter(
+                        //             (dataAccount) =>
+                        //                 dataAccount.id === record.account_id,
+                        //         )[0]?.username,
+                        // },
                         {
                             title: 'Action',
                             width: '5%',
@@ -98,7 +113,14 @@ const Index = () => {
                                         Detail
                                     </Button>
                                     <Button onClick={() => {}}>Edit</Button>
-                                    <Button>Delete</Button>
+                                    <Popconfirm
+                                        title="Bạn có chắc chắn muốn xóa?"
+                                        // onConfirm={() => handleDelete(record.key)}
+                                        okText="Xóa"
+                                        cancelText="Hủy"
+                                    >
+                                        <Button>Delete</Button>
+                                    </Popconfirm>
                                 </Space>
                             ),
                         },

@@ -65,7 +65,7 @@ function UpdatePermission(props) {
                                 message: 'Success',
                                 description: 'Cập nhật dữ liệu thành công.',
                             });
-                            props.handleCancel();
+                            props.handleCancelPermission();
                         });
                 });
         } catch (err) {
@@ -123,10 +123,11 @@ function UpdatePermission(props) {
             <Modal
                 open={props.open}
                 title="Thêm phòng ban"
-                onCancel={props.handleCancel}
                 onOk={() => {
                     handleOk(initialCheckedPermissions, checkedPermissions);
                 }}
+                onCancel={props.handleCancelPermission}
+                // key={props.key}
             >
                 <Table
                     dataSource={props.dataTableLogs}

@@ -46,13 +46,12 @@ const SideBar = (props) => {
         //     show : true
         //
         // },
-        // {
-        //     key: 2,
-        //     label: 'Phòng ban',
-        //     // path : '/department'
-        //     show : true
-        //
-        // },
+        {
+            key: 2,
+            label: 'Home',
+            path: '/home',
+            show: true,
+        },
         {
             key: 3,
             label: 'Nhân viên',

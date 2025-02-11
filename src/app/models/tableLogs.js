@@ -34,7 +34,7 @@ const TableLogs = sequelize.define(
 
 const tableLogsSync = TableLogs.sync({ alter: true }).then(async () => {
     try {
-        const filters = ['table_log', 'role', 'permission', 'role_permission'];
+        const filters = ['table_log', 'permission', 'role_permission'];
         const database_table_names = await sequelize
             .getQueryInterface()
             .showAllTables();

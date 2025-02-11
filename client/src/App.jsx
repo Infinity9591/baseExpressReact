@@ -23,24 +23,24 @@ const App = () => {
                 <Route
                     path="/site/login"
                     element={
-                        !token ? <Login /> : <Navigate to="/user" replace />
+                        !token ? <Login /> : <Navigate to="/home" replace />
                     }
                 />
-                {/*<Route*/}
-                {/*    path="/account"*/}
-                {/*    element={*/}
-                {/*        token ? (*/}
-                {/*            <Index />*/}
-                {/*        ) : (*/}
-                {/*            <Navigate to="/site/login" replace />*/}
-                {/*        )*/}
-                {/*    }*/}
-                {/*/>*/}
+                <Route
+                    path="/"
+                    element={
+                        token ? (
+                            <Navigate to="/home" replace />
+                        ) : (
+                            <Navigate to="/site/login" replace />
+                        )
+                    }
+                />
                 <Route
                     path="/*"
                     element={
                         token ? (
-                            <Index />
+                            <Index/>
                         ) : (
                             <Navigate to="/site/login" replace />
                         )

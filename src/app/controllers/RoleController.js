@@ -28,9 +28,6 @@ class RoleController {
                         id: req.body.id,
                         name: req.body.name,
                     });
-                    // role.id = req.body.data.id;
-                    // role.name = req.body.data.name;
-                    // department.save();
                 })
                 .then(() => res.status(200).json({ statusUpdate: 'Success' }));
         } catch (e) {

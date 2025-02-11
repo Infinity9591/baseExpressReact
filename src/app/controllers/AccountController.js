@@ -36,6 +36,7 @@ class AccountController {
                             Accounts.create({
                                 username: req.body.username,
                                 password_hash: hash,
+                                role_id: req?.body?.role_id,
                                 is_active: 1,
                             }).then(() => {
                                 res.status(200).json({
@@ -62,7 +63,9 @@ class AccountController {
                 .then(() => {
                     res.status(200).json({ status: 'Success' });
                 });
-        } catch (e) {}
+        } catch (e) {
+            return res.status(500).send('error');
+        }
     }
 
     active(req, res) {
@@ -76,7 +79,25 @@ class AccountController {
                 .then(() => {
                     res.status(200).json({ status: 'Success' });
                 });
-        } catch (e) {}
+        } catch (e) {
+            return res.status(500).send('error');
+        }
+    }
+
+    editRole(req, res) {
+        try {
+            Accounts.findOne({ where: { id: req.body.id } })
+                .then((account) => {
+                    account.update({
+                        role_id: req.body.role_id,
+                    });
+                })
+                .then(() => {
+                    res.status(200).json({ status: 'Success' });
+                });
+        } catch (e) {
+            return res.status(500).send('error');
+        }
     }
 }
 

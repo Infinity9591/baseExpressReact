@@ -5,6 +5,7 @@ import IndexAccount from '../routes/account/index.jsx';
 import IndexRole from '../routes/role/index.jsx';
 import ErrorPage from '../site/error.jsx';
 import ChangePassword from '../site/changePassword.jsx';
+import Home from '../routes/home/index.jsx';
 import { theme } from 'antd';
 import { Content } from 'antd/es/layout/layout.js';
 
@@ -40,6 +41,7 @@ function Main() {
                             path="/site/changePassword"
                             element={<ChangePassword />}
                         />
+                        <Route path="/home" element={<Home />} />
                         {/*<Route path="position" element={ <IndexPosition />}/>*/}
                         {/*<Route path="user" element={ <IndexUser />}/>*/}
                         {/*<Route path="account" element={ <IndexAccount />}/>*/}

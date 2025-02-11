@@ -19,6 +19,10 @@ router.post(
     authorize('delete', 'account'),
     accountController.active,
 );
-// router.get('/' ,accountController.index);
+router.post(
+    '/editRole',
+    authorize('update', 'account'),
+    accountController.editRole,
+);
 
 module.exports = router;
