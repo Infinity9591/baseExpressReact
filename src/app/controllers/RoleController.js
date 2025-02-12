@@ -25,7 +25,6 @@ class RoleController {
             Roles.findByPk(req.body.id)
                 .then((role) => {
                     role.update({
-                        id: req.body.id,
                         name: req.body.name,
                     });
                 })

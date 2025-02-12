@@ -62,6 +62,7 @@ class SiteController {
             Accounts.findByPk(req.body.user.id).then((account) => {
                 Users.findOne({ where: { account_id: account.id } }).then(
                     (user) => {
+                        // res.json(user)
                         res.status(200).json({
                             message: 'Success',
                             id: user.id,

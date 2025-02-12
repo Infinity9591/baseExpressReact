@@ -1,5 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, notification, Space, Spin, Table, Tag } from 'antd';
+import {
+    Button,
+    Divider,
+    Input,
+    notification,
+    Select,
+    Space,
+    Spin,
+    Table,
+    Tag,
+} from 'antd';
 import axios from '../../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
 const { Column, ColumnGroup } = Table;
@@ -20,6 +30,10 @@ const Index = () => {
     const [loading, setLoading] = useState(false);
     const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
+    const [editingRow, setEditingRow] = useState(null);
+    const [count, setCount] = useState(0);
+    const [dataPersonal, setDataPersonal] = useState(0);
+    const [dataName, setDataName] = useState();
 
     const showModalPermission = () => {
         setIsModalPermissionOpen(true);
@@ -37,6 +51,47 @@ const Index = () => {
     const handleCancelCreate = () => {
         setIsModalCreateOpen(false);
         setRefreshKey((prevKey) => prevKey + 1);
+    };
+
+    const handleEdit = (record) => {
+        setEditingRow(record.id); // Bắt đầu chỉnh sửa hàng có ID là record.id
+        setDataName(record)
+    };
+
+
+    const handleSave = async (record) => {
+        // console.log(dataName);
+        try {
+            await axios.post(
+                '/role/update',
+                dataName,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + cookie['access-token'],
+                    },
+                },
+            );
+            notification.success({
+                message: 'Success',
+                description: 'Cập nhật tên thành công!',
+            });
+            setEditingRow(null); // Kết thúc chỉnh sửa
+            setCount((prev) => prev + 1); // Làm mới dữ liệu
+        } catch (error) {
+            notification.error({
+                message: 'Error',
+                description: 'Cập nhật tên thất bại!',
+            });
+        }
+    };
+
+    const handleNameChange = (value, record) => {
+        setDataName((prevData) => ({ ...prevData, [value.target.name]: value.target.value }));
+
+    };
+
+    const handleCancelEdit = () => {
+        setEditingRow(null); // Bắt đầu chỉnh sửa hàng có ID là record.id
     };
 
     useEffect(() => {
@@ -78,12 +133,14 @@ const Index = () => {
                 );
                 setDataTableLogs(responseTableLogs.data);
 
-                await axios.get('/site/getPersonalInformation', {
+                const responsePersonalData = await axios.get('/site/getPersonalInformation', {
                     headers: {
                         Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
                     },
                 });
-                // setDataPersonal(responsePersonalData.data);
+                setDataPersonal(responsePersonalData.data);
+
+                if (dataPersonal.role !== "admin") navigate('/site/error')
             } catch (error) {
                 // notification.error({
                 //     message: 'Error',
@@ -95,7 +152,7 @@ const Index = () => {
             }
         };
         fetchData();
-    }, [refreshKey]);
+    }, [refreshKey, count]);
     return (
         <>
             <Divider
@@ -138,10 +195,23 @@ const Index = () => {
                             title: 'Tên',
                             dataIndex: 'name',
                             key: 'name',
+                            width: '40%',
+                            render: (text, record, index) =>
+                                editingRow === record.id ? (
+                                    <Input
+                                        defaultValue={text}
+                                        name={"name"}
+                                        onChange={(value) => {
+                                            handleNameChange(value, record);
+                                        }}
+                                    />
+                                ) : (
+                                    text
+                                ),
                         },
                         {
                             title: 'Action',
-                            width: '5%',
+                            width: '25%',
                             render: (text, record, index) => (
                                 <Space>
                                     <Button
@@ -152,14 +222,31 @@ const Index = () => {
                                     >
                                         Quyền hạn
                                     </Button>
-                                    <Button
-                                        onClick={() => {
-                                            console.log(record);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    <Button>Delete</Button>
+                                    {editingRow === record.id ? (
+                                        <>
+                                            <Button
+                                                onClick={() =>
+                                                    handleSave(record)
+                                                }
+                                            >
+                                                Save
+                                            </Button>
+                                            <Button
+                                                onClick={() =>
+                                                    handleCancelEdit()
+                                                }
+                                            >
+                                                Cancel
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <Button
+                                            onClick={() => handleEdit(record)}
+                                        >
+                                            Edit
+                                        </Button>
+                                    )}
+                                    {/*<Button>Delete</Button>*/}
                                 </Space>
                             ),
                         },

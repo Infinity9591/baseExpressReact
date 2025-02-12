@@ -62,18 +62,13 @@ const Login = () => {
 
             setCookie('access-token', data.data.token, {
                 // httpOnly : true,
-                // path: '/',
-                // secure: true,
+                path: '/',
+                secure: true,
                 sameSite: 'strict',
                 maxAge: 86400,
             });
             routeChange('/account');
         });
-    };
-
-    const handleSubmit = () => {
-        // event.preventDefault(); // Prevent page reload
-        console.log(formData);
     };
 
     return (

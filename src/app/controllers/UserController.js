@@ -29,6 +29,24 @@ class UserController {
             return res.status(500).send('error');
         }
     }
+
+    update(req, res) {
+        try {
+            Users.findByPk(req.body.id)
+                .then((user) => {
+                    user.update({
+                        name: req.body.name,
+                        phone_number: req.body.phone_number,
+                        email: req.body.email,
+                        address: req.body.address,
+                        account_id: req.body.account_id,
+                    });
+                })
+                .then(() => res.status(200).json({ statusUpdate: 'Success' }));
+        } catch (e) {
+            return res.status(500).send('error');
+        }
+    }
 }
 
 module.exports = new UserController();

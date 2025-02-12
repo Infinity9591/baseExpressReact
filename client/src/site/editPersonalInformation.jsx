@@ -2,9 +2,11 @@ import { useEffect, useState } from 'react';
 import axios from '../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
 import { Button, Checkbox, Form, Input, notification, Spin } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const EditPersonalInformation = () => {
     const [cookie, setCookie, removeCookie] = useCookies();
+    const navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(true);
     let datas = {};
@@ -33,6 +35,7 @@ const EditPersonalInformation = () => {
                         message: 'Success',
                         description: data.statusUpdate,
                     });
+                    navigate('/site/error');
                 });
         } catch (e) {
             notification.error({
