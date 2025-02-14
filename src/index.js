@@ -9,6 +9,13 @@ const verifyToken = require('../src/middleware/verifyAccessToken');
 
 app.use(cors());
 
+// app.use(
+//     cors({
+//         origin: "http://localhost:5173", // Frontend URL (React)
+//         credentials: true, // Cho phép gửi cookie, token
+//     })
+// );
+
 app.use(
     express.urlencoded({
         extended: true,

@@ -16,6 +16,8 @@ const { Column, ColumnGroup } = Table;
 import UpdatePermission from './updatePermission.jsx';
 import { useNavigate } from 'react-router-dom';
 import Create from './create.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from '../../redux/reducers/authSlice.js';
 
 const Index = () => {
     const navigate = useNavigate();
@@ -32,7 +34,6 @@ const Index = () => {
     const [refreshKey, setRefreshKey] = useState(0);
     const [editingRow, setEditingRow] = useState(null);
     const [count, setCount] = useState(0);
-    const [dataPersonal, setDataPersonal] = useState(0);
     const [dataName, setDataName] = useState();
 
     const showModalPermission = () => {
@@ -138,9 +139,8 @@ const Index = () => {
                         Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
                     },
                 });
-                setDataPersonal(responsePersonalData.data);
-
-                if (dataPersonal.role !== "admin") navigate('/site/error')
+                // setDataPersonal(responsePersonalData?.data);
+                if (responsePersonalData?.data?.role !== "admin") navigate('/site/error')
             } catch (error) {
                 // notification.error({
                 //     message: 'Error',
