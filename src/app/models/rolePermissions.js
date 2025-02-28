@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { sequelize } = require('../config/db.config');
 const Roles = require('./roles');
 const Permissions = require('./permissions');
-const { tableLogsSync } = require('./tableLogs');
+// const { tableLogsSync } = require('./tableLogs');
 // import {tableLogsSync} from './tableLogs.js'
 // const Roles = require('./roles');
 // const Permissions = require('./permissions');
@@ -54,12 +54,12 @@ RolePermissions.belongsTo(Permissions, {
     foreignKey: 'permission_id',
 });
 
-RolePermissions.addHook('afterUpdate', async (instance) => {
-    await tableLogsSync;
-});
-
-RolePermissions.addHook('afterCreate', async (instance) => {
-    await tableLogsSync;
-});
+// RolePermissions.addHook('afterUpdate', async (instance) => {
+//     await tableLogsSync;
+// });
+//
+// RolePermissions.addHook('afterCreate', async (instance) => {
+//     await tableLogsSync;
+// });
 
 module.exports = RolePermissions;

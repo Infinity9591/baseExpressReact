@@ -16,8 +16,8 @@ const { Column, ColumnGroup } = Table;
 import UpdatePermission from './updatePermission.jsx';
 import { useNavigate } from 'react-router-dom';
 import Create from './create.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../../redux/reducers/authSlice.js';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { fetchUser } from '../../redux/reducers/authSlice.js';
 
 const Index = () => {
     const navigate = useNavigate();
@@ -125,7 +125,7 @@ const Index = () => {
                 setDataRolesPermissions(responseRolesPermissions.data);
 
                 const responseTableLogs = await axios.get(
-                    '/tableLog/getTableLogs',
+                    '/site/getSourceName',
                     {
                         headers: {
                             Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token

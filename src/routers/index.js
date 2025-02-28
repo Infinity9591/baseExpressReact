@@ -4,7 +4,6 @@ const userRouter = require('./routes/user');
 const rolePermissionRouter = require('./routes/rolePermission');
 const roleRouter = require('./routes/role');
 const permissionRouter = require('./routes/permission');
-const tableLogsRouter = require('./routes/tableLog');
 
 const express = require('express');
 const router = express.Router();
@@ -15,6 +14,5 @@ router.use('/user', userRouter);
 router.use('/rolePermission', rolePermissionRouter);
 router.use('/role', roleRouter);
 router.use('/permission', permissionRouter);
-router.use('/tableLog', tableLogsRouter);
 
 module.exports = router;

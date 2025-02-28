@@ -9,5 +9,6 @@ router.post(
     siteController.updatePersonalInformation,
 );
 router.post('/changePassword', siteController.changePassword);
+router.get('/getSourceName', siteController.getSourceName);
 
 module.exports = router;

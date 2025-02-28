@@ -2,6 +2,7 @@ const Accounts = require('../models/accounts');
 const Users = require('../models/users');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { sequelize } = require('../config/db.config');
 
 require('dotenv').config();
 
@@ -128,6 +129,17 @@ class SiteController {
         } catch (e) {
             return res.status(500).send('error');
         }
+    }
+
+    async getSourceName(req, res){
+        const filters = ['table_log', 'permission', 'role_permission'];
+        const database_table_names = await sequelize
+            .getQueryInterface()
+            .showAllTables();
+        const table_names = database_table_names.filter(
+            (name) => !filters.includes(name),
+        ).map(name => ({ table_name: name }));
+        res.status(200).json(table_names)
     }
 }
 

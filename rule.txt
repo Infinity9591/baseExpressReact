@@ -3,3 +3,5 @@ file_name :
 	others : camelCase
 
 update database first
+
+asynchorous must use async/await
