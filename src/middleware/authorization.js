@@ -1,5 +1,5 @@
-const Accounts = require('../app/models/accounts');
-const defineAbilitiesFor = require('../app/config/acl');
+const Accounts = require('../models/accounts');
+const defineAbilitiesFor = require('../config/acl');
 // const TableLogs = require('../app/models/tableLogs');
 
 const authorization = (action, resource) => {

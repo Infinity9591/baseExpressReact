@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button,
-    Divider, Input,
+    Divider,
+    Input,
     notification,
     Popconfirm,
     Space,
@@ -25,11 +26,11 @@ const Index = () => {
     const [loading, setLoading] = useState(false);
     const [editingRow, setEditingRow] = useState(null);
     const [dataEdit, setDataEdit] = useState({
-        id : "",
-        name: "",
-        phone_number: "",
-        email: "",
-        address: "",
+        id: '',
+        name: '',
+        phone_number: '',
+        email: '',
+        address: '',
         account_id: null,
     });
 
@@ -44,7 +45,7 @@ const Index = () => {
 
     const handleEdit = (record) => {
         setEditingRow(record.id); // Bắt đầu chỉnh sửa hàng có ID là record.id
-        setDataEdit(record)
+        setDataEdit(record);
     };
 
     const handleCancelEdit = () => {
@@ -52,21 +53,19 @@ const Index = () => {
     };
 
     const handleInputChange = (value, record) => {
-        setDataEdit((prevData) => ({ ...prevData, [value.target.name]: value.target.value }));
-
+        setDataEdit((prevData) => ({
+            ...prevData,
+            [value.target.name]: value.target.value,
+        }));
     };
     const handleSave = async (record) => {
         // console.log(dataEdit);
         try {
-            await axios.post(
-                '/user/update',
-                dataEdit,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + cookie['access-token'],
-                    },
+            await axios.post('/user/update', dataEdit, {
+                headers: {
+                    Authorization: 'Bearer ' + cookie['access-token'],
                 },
-            );
+            });
             notification.success({
                 message: 'Success',
                 description: 'Cập nhật tên thành công!',
@@ -297,9 +296,7 @@ const Index = () => {
                                         </>
                                     ) : (
                                         <Button
-                                            onClick={() =>
-                                                handleEdit(record)
-                                            }
+                                            onClick={() => handleEdit(record)}
                                         >
                                             Edit
                                         </Button>

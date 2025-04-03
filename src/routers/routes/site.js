@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const siteController = require('../../app/controllers/SiteControllers');
+const siteController = require('../../controllers/SiteControllers');
 
 router.post('/login', siteController.login);
 router.get('/getPersonalInformation', siteController.getPersonalInformation);

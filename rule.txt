@@ -2,6 +2,33 @@ file_name :
 	controllers : PascalCase
 	others : camelCase
 
-update database first
+	models : have s
+	routes : no s
 
 asynchorous must use async/await
+
+get data : get
+create data : post
+delete data : delete
+update data : patch
+
+RESTful API – Viết đúng chuẩn
+API ngon không chỉ là chạy được mà phải dễ dùng! Dùng chuẩn REST:
+GET lấy dữ liệu: /users trả về danh sách user.
+POST thêm mới: /users với body JSON { "name": "An" }.
+PUT cập nhật, DELETE xóa – nhớ trả mã trạng thái (200 OK, 404 Not Found).
+Mẹo: Dùng thư viện như Express (Node.js) để viết nhanh endpoint!
+2️⃣ Tối ưu truy vấn Database
+API chậm thường do query “ì ạch”. Bí kíp:
+Tránh SELECT *, chỉ lấy cột cần: SELECT id, name FROM users.
+Dùng index: CREATE INDEX idx_name ON users(name) để tìm kiếm nhanh hơn.
+Hạn chế join phức tạp – thử tách query nhỏ nếu có thể.
+3️⃣ Xử lý lỗi – Đừng để server crash
+Client gửi dữ liệu “lầy” là chuyện thường! Bảo vệ server bằng:
+Validate input: Check if (!req.body.name) return res.status(400).send('Thiếu name').
+Try-catch: try { await db.query() } catch (e) { res.status(500).send('Lỗi server') }.
+Log lỗi: Dùng console.error hoặc Winston để debug dễ hơn.
+
+postman :
+ten folder : snake_case
+ten api : camelCase

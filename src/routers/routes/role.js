@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const roleController = require('../../app/controllers/RoleController');
+const roleController = require('../../controllers/RoleController');
 const authorize = require('../../middleware/authorization');
 
 router.get('/', authorize('read', 'role'), roleController.index);

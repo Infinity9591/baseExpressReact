@@ -56,22 +56,17 @@ const Index = () => {
 
     const handleEdit = (record) => {
         setEditingRow(record.id); // Bắt đầu chỉnh sửa hàng có ID là record.id
-        setDataName(record)
+        setDataName(record);
     };
-
 
     const handleSave = async (record) => {
         // console.log(dataName);
         try {
-            await axios.post(
-                '/role/update',
-                dataName,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + cookie['access-token'],
-                    },
+            await axios.post('/role/update', dataName, {
+                headers: {
+                    Authorization: 'Bearer ' + cookie['access-token'],
                 },
-            );
+            });
             notification.success({
                 message: 'Success',
                 description: 'Cập nhật tên thành công!',
@@ -87,8 +82,10 @@ const Index = () => {
     };
 
     const handleNameChange = (value, record) => {
-        setDataName((prevData) => ({ ...prevData, [value.target.name]: value.target.value }));
-
+        setDataName((prevData) => ({
+            ...prevData,
+            [value.target.name]: value.target.value,
+        }));
     };
 
     const handleCancelEdit = () => {
@@ -134,13 +131,17 @@ const Index = () => {
                 );
                 setDataTableLogs(responseTableLogs.data);
 
-                const responsePersonalData = await axios.get('/site/getPersonalInformation', {
-                    headers: {
-                        Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
+                const responsePersonalData = await axios.get(
+                    '/site/getPersonalInformation',
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
+                        },
                     },
-                });
+                );
                 // setDataPersonal(responsePersonalData?.data);
-                if (responsePersonalData?.data?.role !== "admin") navigate('/site/error')
+                if (responsePersonalData?.data?.role !== 'admin')
+                    navigate('/site/error');
             } catch (error) {
                 // notification.error({
                 //     message: 'Error',
@@ -200,7 +201,7 @@ const Index = () => {
                                 editingRow === record.id ? (
                                     <Input
                                         defaultValue={text}
-                                        name={"name"}
+                                        name={'name'}
                                         onChange={(value) => {
                                             handleNameChange(value, record);
                                         }}

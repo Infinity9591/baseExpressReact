@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const rolePermissionController = require('../../app/controllers/RolePermissionController');
+const rolePermissionController = require('../../controllers/RolePermissionController');
 const authorize = require('../../middleware/authorization');
 
 router.get('/', rolePermissionController.index);

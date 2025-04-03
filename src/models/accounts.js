@@ -37,8 +37,4 @@ Accounts.belongsTo(Roles, {
     foreignKey: 'role_id',
 });
 
-// Accounts.associate = (models) => {
-//     Accounts.belongsToMany(models.Roles, { through: "UserRoles" });
-// };
-
 module.exports = Accounts;

@@ -7,5 +7,6 @@
 // const verified = jwt.verify(token, process.env.JWT_SECRET);
 //
 // console.log(verified);
+const config = require('./src/config/config.json')
 
-const bcrypt = require('bcrypt');
+console.log(config.development.username);

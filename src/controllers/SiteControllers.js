@@ -131,15 +131,15 @@ class SiteController {
         }
     }
 
-    async getSourceName(req, res){
+    async getSourceName(req, res) {
         const filters = ['table_log', 'permission', 'role_permission'];
         const database_table_names = await sequelize
             .getQueryInterface()
             .showAllTables();
-        const table_names = database_table_names.filter(
-            (name) => !filters.includes(name),
-        ).map(name => ({ table_name: name }));
-        res.status(200).json(table_names)
+        const table_names = database_table_names
+            .filter((name) => !filters.includes(name))
+            .map((name) => ({ table_name: name }));
+        res.status(200).json(table_names);
     }
 }
 
