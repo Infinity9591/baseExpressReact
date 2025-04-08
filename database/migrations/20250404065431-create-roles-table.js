@@ -13,7 +13,7 @@ module.exports = {
                     primaryKey: true,
                     autoIncrement: true,
                 },
-                name: {
+                role_name: {
                     type: DataTypes.STRING(255),
                     allowNull: false,
                 },

@@ -11,13 +11,7 @@ const config = {
         database: process.env.DB_DEV_DBNAME,
         host: process.env.DB_DEV_HOST,
         port: process.env.DB_DEV_PORT,
-        dialect: process.env.DB_DIALECT || 'mysql',
-        directory: false,
-        additional: {
-            timestamps: true,
-            createdAt: 'created_at',
-            updatedAt: 'updated_at',
-        },
+        dialect: process.env.DB_DIALECT || 'mysql'
     },
     test: {
         username: process.env.DB_TEST_USERNAME,

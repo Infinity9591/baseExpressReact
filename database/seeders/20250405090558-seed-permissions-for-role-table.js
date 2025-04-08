@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    async up(queryInterface, Sequelize) {
+    up: async function (queryInterface, Sequelize) {
         /**
          * Add seed commands here.
          *
@@ -12,6 +12,73 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
+
+        await queryInterface.bulkInsert(
+            'permissions_for_role',
+            [
+                {
+                    id_role : 1,
+                    id_permission : 1,
+                    source_name : "accounts",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 2,
+                    source_name : "accounts",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 3,
+                    source_name : "accounts",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 4,
+                    source_name : "accounts",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 1,
+                    source_name : "roles",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 2,
+                    source_name : "roles",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 3,
+                    source_name : "roles",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 4,
+                    source_name : "roles",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 1,
+                    source_name : "permissions",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 2,
+                    source_name : "permissions",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 3,
+                    source_name : "permissions",
+                },
+                {
+                    id_role : 1,
+                    id_permission : 4,
+                    source_name : "permissions",
+                },
+            ],
+            {},
+        );
     },
 
     async down(queryInterface, Sequelize) {

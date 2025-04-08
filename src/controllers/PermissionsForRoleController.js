@@ -1,5 +1,6 @@
 const dbConfig = require('../utils/db.config.js');
-const { permissions_for_role, roles } = require('../models/init-models').default(dbConfig);
+const { permissions_for_role, roles } =
+    require('../models/init-models').default(dbConfig);
 const bcrypt = require('bcrypt');
 
 require('dotenv').config();
@@ -7,16 +8,18 @@ require('dotenv').config();
 class PermissionsForRoleController {
     index(req, res) {
         try {
-            permissions_for_role.findAll({
-                include :[
-                    {
-                        model : roles,
-                        as : "role"
-                    }
-                ]
-            }).then((rolePermission) => {
-                res.json(rolePermission);
-            });
+            permissions_for_role
+                .findAll({
+                    include: [
+                        {
+                            model: roles,
+                            as: 'role',
+                        },
+                    ],
+                })
+                .then((rolePermission) => {
+                    res.json(rolePermission);
+                });
         } catch (e) {
             return res.status(500).send('error');
         }

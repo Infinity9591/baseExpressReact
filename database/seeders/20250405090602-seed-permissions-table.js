@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-    async up(queryInterface, Sequelize) {
+    up: async function (queryInterface, Sequelize) {
         /**
          * Add seed commands here.
          *
@@ -12,6 +12,25 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
+
+        await queryInterface.bulkInsert(
+            'permissions',
+            [
+                {
+                    permission_name: 'create',
+                },
+                {
+                    permission_name: 'read',
+                },
+                {
+                    permission_name: 'update',
+                },
+                {
+                    permission_name: 'delete',
+                },
+            ],
+            {},
+        );
     },
 
     async down(queryInterface, Sequelize) {

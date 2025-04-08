@@ -12,6 +12,10 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
+
+        await queryInterface.bulkInsert('roles', [{
+            role_name: 'admin',
+        }], {});
     },
 
     async down(queryInterface, Sequelize) {

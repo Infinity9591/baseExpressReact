@@ -14,9 +14,9 @@
         "JWTkey:generate": "node scripts/generate_JWT_secret.js",
         "db": "sequelize-cli db:create",
         "db:migrate": "sequelize-cli db:migrate",
-        "db:seed": "sequelize-cli db:seed",
+        "db:seed": "sequelize-cli db:seed:all",
         "model": "sequelize-auto --config config/database.js --output src/models --skipTables sequelizemeta  --additional config/autogen_model_config.json",
-        "make:model" : "npx sequelize-auto"
+        "make:model": "npx sequelize-auto"
     },
     "dependencies": {
         "@casl/ability": "6.7.3",

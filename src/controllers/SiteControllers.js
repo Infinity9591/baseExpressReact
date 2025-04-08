@@ -1,8 +1,7 @@
 const dbConfig = require('../utils/db.config.js');
-const { accounts } = require('../models/init-models').default(dbConfig);
+const { accounts, roles } = require('../models/init-models').default(dbConfig);
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { sequelize } = require('../utils/db.config');
 
 require('dotenv').config();
 
@@ -62,7 +61,12 @@ class SiteController {
     getPersonalInformation(req, res) {
         try {
             // res.json(req);
-            accounts.findByPk(req.body.user.id).then((account) => {
+            accounts.findByPk(req.body.user.id, {
+                include : {
+                    // as : "roles",
+                    model : roles
+                }
+            }).then((account) => {
                 res.status(200).json(account);
             });
         } catch (e) {
@@ -119,8 +123,8 @@ class SiteController {
     }
 
     async getSourceName(req, res) {
-        const filters = ['table_log', 'permission', 'role_permission'];
-        const database_table_names = await sequelize
+        const filters = ["sequelizemeta"];
+        const database_table_names = await dbConfig
             .getQueryInterface()
             .showAllTables();
         const table_names = database_table_names
