@@ -3,7 +3,7 @@ const router = express.Router();
 const permissionController = require('../../controllers/PermissionController');
 const authorize = require('../../middlewares/authorization');
 
-router.get('/', permissionController.index);
-router.post('/create', permissionController.create);
+router.get('/', authorize('read', 'permissions'), permissionController.index);
+router.post('/create', authorize('create', 'permissions'), permissionController.create);
 
 module.exports = router;

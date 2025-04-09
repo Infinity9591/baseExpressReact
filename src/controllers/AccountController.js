@@ -1,4 +1,5 @@
-const Accounts = require('../models/accounts');
+const dbConfig = require('../utils/db.config.js');
+const { accounts } = require('../models/init-models').default(dbConfig);
 const bcrypt = require('bcrypt');
 
 require('dotenv').config();
@@ -6,7 +7,7 @@ require('dotenv').config();
 class AccountController {
     index(req, res) {
         try {
-            Accounts.findAll().then((accounts) => {
+            accounts.findAll().then((accounts) => {
                 res.json(accounts);
             });
         } catch (e) {
@@ -21,7 +22,7 @@ class AccountController {
                     message: 'Username or Password must not be null',
                 });
             } else {
-                const existsUsername = await Accounts.findOne({
+                const existsUsername = await accounts.findOne({
                     where: { username: req.body.username },
                 });
                 if (existsUsername) {
@@ -33,10 +34,10 @@ class AccountController {
                             parseInt(process.env.COST_FACTOR),
                         )
                         .then(function (hash) {
-                            Accounts.create({
+                            accounts.create({
                                 username: req.body.username,
                                 password_hash: hash,
-                                role_id: req?.body?.role_id,
+                                id_role: req?.body?.id_role,
                                 is_active: 1,
                             }).then(() => {
                                 res.status(200).json({
@@ -53,7 +54,7 @@ class AccountController {
 
     deactive(req, res) {
         try {
-            Accounts.findOne({ where: { id: req.body.id } })
+            accounts.findOne({ where: { id: req.body.id } })
                 .then((account) => {
                     if (account.is_active === 1)
                         account.update({
@@ -70,7 +71,7 @@ class AccountController {
 
     active(req, res) {
         try {
-            Accounts.findOne({ where: { id: req.body.id } })
+            accounts.findOne({ where: { id: req.body.id } })
                 .then((account) => {
                     account.update({
                         is_active: 1,
@@ -86,10 +87,10 @@ class AccountController {
 
     editRole(req, res) {
         try {
-            Accounts.findOne({ where: { id: req.body.id } })
+            accounts.findOne({ where: { id: req.body.id } })
                 .then((account) => {
                     account.update({
-                        role_id: req.body.role_id,
+                        id_role: req.body.id_role,
                     });
                 })
                 .then(() => {

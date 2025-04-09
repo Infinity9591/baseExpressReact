@@ -1,32 +1,32 @@
 const { AbilityBuilder, createMongoAbility } = require('@casl/ability');
-const PermissionsForRole = require('../models/permissions_for_role');
+const dbConfig = require('../utils/db.config.js');
+const { permissions_for_role, permissions} = require('../models/init-models').default(dbConfig);
 const Permissions = require('../models/permissions');
 
 const defineAbilitiesFor = async (account) => {
     const { can, cannot, build } = new AbilityBuilder(createMongoAbility);
 
-    const permissionsForRoleInfors = await PermissionsForRole.findAll({
-        where: { role_id: account.role_id },
+    const permissionsForRoleInfors = await permissions_for_role.findAll({
+        where: { id_role: account.id_role },
     });
 
     const results = await Promise.all(
         permissionsForRoleInfors.map(async (infor) => {
-            const permission = await Permissions.findOne({
-                where: { id: infor.permission_id },
+            const permission = await permissions.findOne({
+                where: { id: infor.id_permission },
             });
             return {
-                id: infor.id,
-                role_id: infor.role_id,
-                action_name: permission ? permission.action_name : null,
-                table_name: infor.table_name,
+                id: infor.id_role,
+                permission: permission ? permission.action_name : null,
+                source_name: infor.source_name,
             };
         }),
     );
-    if (account.role_id === 'admin') {
+    if (account.id_role === 1) {
         can('manage', 'all');
     } else {
         results.map((result) => {
-            can(result.action_name, result.table_name);
+            can(result.permission, result.source_name);
         });
     }
 

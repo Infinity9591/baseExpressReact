@@ -63,7 +63,7 @@ module.exports = function (sequelize, DataTypes) {
             createAt: 'create_at',
             updateAt: 'update_at',
             defaultScope : {
-                attributes : { exclude : ['created_at', 'updated_at']}
+                attributes : { exclude : ['created_at', 'updated_at', 'password_hash']}
             },
             indexes: [
                 {

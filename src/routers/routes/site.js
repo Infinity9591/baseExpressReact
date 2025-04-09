@@ -4,11 +4,11 @@ const siteController = require('../../controllers/SiteControllers');
 
 router.post('/login', siteController.login);
 router.get('/getPersonalInformation', siteController.getPersonalInformation);
-router.post(
+router.patch(
     '/updatePersonalInformation',
     siteController.updatePersonalInformation,
 );
-router.post('/changePassword', siteController.changePassword);
+router.patch('/changePassword', siteController.changePassword);
 router.get('/getSourceName', siteController.getSourceName);
 
 module.exports = router;

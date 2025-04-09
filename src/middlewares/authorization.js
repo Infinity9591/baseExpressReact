@@ -1,11 +1,11 @@
-const Accounts = require('../models/accounts');
+const dbConfig = require('../utils/db.config.js');
+const { accounts } = require('../models/init-models').default(dbConfig);
 const defineAbilitiesFor = require('../utils/acl');
-// const TableLogs = require('../app/models/tableLogs');
 
 const authorization = (action, resource) => {
     return (req, res, next) => {
         try {
-            Accounts.findByPk(req.body.user.id).then(async (account) => {
+            accounts.findByPk(req.body.user.id).then(async (account) => {
                 const ability = await defineAbilitiesFor(account);
 
                 if (!ability || typeof ability.can !== 'function') {

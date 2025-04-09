@@ -12,7 +12,9 @@ function initModels(sequelize) {
     var roles = _roles(sequelize, DataTypes);
 
     //define association
-    accounts.belongsTo(roles, {foreignKey : "id_role"})
+    accounts.belongsTo(roles, { as : "role", foreignKey : "id_role"});
+    permissions_for_role.belongsTo(roles, {as : "role", foreignKey : "id_role"});
+    permissions_for_role.belongsTo(permissions, {as : "permission", foreignKey : "id_permission"});
 
     return {
         accounts,

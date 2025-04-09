@@ -3,25 +3,25 @@ const router = express.Router();
 const accountController = require('../../controllers/AccountController');
 const authorize = require('../../middlewares/authorization');
 
-router.get('/', authorize('read', 'account'), accountController.index);
+router.get('/', authorize('read', 'accounts'), accountController.index);
 router.post(
     '/create',
-    authorize('create', 'account'),
+    authorize('create', 'accounts'),
     accountController.create,
 );
-router.post(
+router.patch(
     '/deactive',
-    authorize('delete', 'account'),
+    authorize('delete', 'accounts'),
     accountController.deactive,
 );
-router.post(
+router.patch(
     '/active',
-    authorize('delete', 'account'),
+    authorize('delete', 'accounts'),
     accountController.active,
 );
-router.post(
+router.patch(
     '/editRole',
-    authorize('update', 'account'),
+    authorize('update', 'accounts'),
     accountController.editRole,
 );
 

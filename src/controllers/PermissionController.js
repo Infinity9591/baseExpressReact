@@ -1,9 +1,10 @@
-const Permissions = require('../models/permissions');
+const dbConfig = require('../utils/db.config.js');
+const { permissions } = require('../models/init-models').default(dbConfig);
 
 class PermissionController {
     index(req, res) {
         try {
-            Permissions.findAll().then((permission) => {
+            permissions.findAll().then((permission) => {
                 res.json(permission);
             });
         } catch (e) {
@@ -13,9 +14,9 @@ class PermissionController {
 
     create(req, res) {
         try {
-            Permissions.create({
+            permissions.create({
                 id: req.body.id,
-                action_name: req.body.action_name,
+                permission_name: req.body.permission_name,
             });
             res.status(200).json({ statusCreate: 'Success' });
         } catch (e) {
@@ -25,11 +26,11 @@ class PermissionController {
 
     update(req, res) {
         try {
-            Permissions.findByPk(req.body.id)
+            permissions.findByPk(req.body.id)
                 .then((permission) => {
                     permission.update({
                         id: req.body.id,
-                        action_name: req.body.action_name,
+                        permission_name: req.body.permission_name,
                     });
                 })
                 .then(() => res.status(200).json({ statusUpdate: 'Success' }));

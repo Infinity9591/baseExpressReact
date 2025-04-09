@@ -12,7 +12,6 @@ const verifyToken = (req, res, next) => {
             if (req?.headers?.authorization?.split(' ')?.[1]) {
                 const token = req?.headers?.authorization?.split(' ')[1];
                 const verified = jwt.verify(token, process.env.JWT_SECRET);
-                console.log(verified);
                 if (verified) {
                     if (!req.body) req.body = {};
                     req.body.user = verified;

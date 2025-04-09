@@ -9,7 +9,7 @@ class SiteController {
     async login(req, res) {
         try {
             accounts
-                .findOne({ where: { username: req.body.username } })
+                .findOne({ where: { username: req.body.username }, attributes : {include : ["password_hash"]} })
                 .then(async (account) => {
                     if (!account)
                         return res.status(401).json({
@@ -63,7 +63,7 @@ class SiteController {
             // res.json(req);
             accounts.findByPk(req.body.user.id, {
                 include : {
-                    // as : "roles",
+                    as : "role",
                     model : roles
                 }
             }).then((account) => {
@@ -75,18 +75,19 @@ class SiteController {
     }
 
     updatePersonalInformation(req, res) {
+        let data;
         try {
             accounts.findByPk(req.body.user.id).then((account) => {
-                Users.findOne({ where: { account_id: account.id } })
-                    .then((user) => {
-                        user.update({
-                            name: req.body.name,
-                            phone_number: req.body.phone_number,
-                            email: req.body.email,
-                            address: req.body.address,
-                        });
-                    })
-                    .then(() => res.status(200).json({ message: 'Success' }));
+                data = {
+                    person_name : req.body?.person_name,
+                    birthday : req.body?.birthday,
+                    phone_number : req.body?.phone_number,
+                    email : req.body?.email,
+                    address : req.body?.address
+                }
+                account.update(data)
+            }).then(() => {
+                res.status(200).json({message : "Success", ...data})
             });
         } catch (e) {
             return res.status(500).send('error');
@@ -95,7 +96,7 @@ class SiteController {
 
     changePassword(req, res) {
         try {
-            accounts.findByPk(req.body.user.id).then(async (account) => {
+            accounts.findByPk(req.body.user.id, {attributes : {include : ["password_hash"]}}).then(async (account) => {
                 const new_password = await bcrypt.hash(
                     req.body.new_password,
                     parseInt(process.env.COST_FACTOR),
@@ -103,7 +104,7 @@ class SiteController {
                 if (
                     await bcrypt.compare(
                         req.body.old_password,
-                        account.password_hash,
+                        account.password_hash
                     )
                 ) {
                     account
@@ -111,10 +112,10 @@ class SiteController {
                             password_hash: new_password,
                         })
                         .then(() => {
-                            res.status(200).json({ statusCreate: 'Success' });
+                            return res.status(200).json({ statusCreate: 'Success' });
                         });
                 } else {
-                    res.status(400).json({ message: 'Incorrect password' });
+                    return res.status(400).json({ message: 'Incorrect password' });
                 }
             });
         } catch (e) {
@@ -123,13 +124,13 @@ class SiteController {
     }
 
     async getSourceName(req, res) {
-        const filters = ["sequelizemeta"];
+        const filters = ["sequelizemeta","permissions_for_role"];
         const database_table_names = await dbConfig
             .getQueryInterface()
             .showAllTables();
         const table_names = database_table_names
             .filter((name) => !filters.includes(name))
-            .map((name) => ({ table_name: name }));
+            .map((name) => ({ source_name: name }));
         res.status(200).json(table_names);
     }
 }

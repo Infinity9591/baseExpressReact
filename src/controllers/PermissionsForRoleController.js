@@ -1,5 +1,5 @@
 const dbConfig = require('../utils/db.config.js');
-const { permissions_for_role, roles } =
+const { permissions_for_role, roles, permissions } =
     require('../models/init-models').default(dbConfig);
 const bcrypt = require('bcrypt');
 
@@ -15,10 +15,15 @@ class PermissionsForRoleController {
                             model: roles,
                             as: 'role',
                         },
+                        {
+                            model : permissions,
+                            as : "permission"
+                        }
+
                     ],
                 })
-                .then((rolePermission) => {
-                    res.json(rolePermission);
+                .then((permission_for_role) => {
+                    res.status(200).json(permission_for_role);
                 });
         } catch (e) {
             return res.status(500).send('error');
@@ -27,7 +32,7 @@ class PermissionsForRoleController {
 
     async addPermissions(req, res) {
         try {
-            const permissions = req.body; // Dữ liệu là một mảng JSON
+            const permissions = req.body;
 
             if (!Array.isArray(permissions)) {
                 return res.status(400).json({
@@ -39,30 +44,30 @@ class PermissionsForRoleController {
             const results = [];
 
             for (const permission of permissions) {
-                const { role_id, permission_id, table_name } = permission;
+                const { id_role, id_permission, source_name } = permission;
 
-                const exists = await RolePermissions.findOne({
-                    where: { role_id, permission_id, table_name },
+                const exists = await permissions_for_role.findOne({
+                    where: { id_role, id_permission, source_name },
                 });
 
                 if (exists) {
                     results.push({
                         status: 'Exists',
-                        role_id,
-                        permission_id,
-                        table_name,
+                        id_role,
+                        id_permission,
+                        source_name,
                     });
                 } else {
-                    await RolePermissions.create({
-                        role_id,
-                        permission_id,
-                        table_name,
+                    await permissions_for_role.create({
+                        id_role,
+                        id_permission,
+                        source_name,
                     });
                     results.push({
                         status: 'Success',
-                        role_id,
-                        permission_id,
-                        table_name,
+                        id_role,
+                        id_permission,
+                        source_name,
                     });
                 }
             }
@@ -91,31 +96,31 @@ class PermissionsForRoleController {
             const results = [];
 
             for (const permission of permissions) {
-                const { role_id, permission_id, table_name } = permission;
+                const { id_role, id_permission, source_name } = permission;
 
                 // Tìm đối tượng trong cơ sở dữ liệu
-                const exists = await RolePermissions.findOne({
-                    where: { role_id, permission_id, table_name },
+                const exists = await permissions_for_role.findOne({
+                    where: { id_role, id_permission, source_name },
                 });
 
                 if (exists) {
                     // Nếu tồn tại, tiến hành xóa
-                    await RolePermissions.destroy({
-                        where: { role_id, permission_id, table_name },
+                    await permissions_for_role.destroy({
+                        where: { id_role, id_permission, source_name },
                     });
                     results.push({
                         status: 'Deleted',
-                        role_id,
-                        permission_id,
-                        table_name,
+                        id_role,
+                        id_permission,
+                        source_name,
                     });
                 } else {
                     // Nếu không tồn tại, trả về trạng thái không tìm thấy
                     results.push({
                         status: 'Not Found',
-                        role_id,
-                        permission_id,
-                        table_name,
+                        id_role,
+                        id_permission,
+                        source_name,
                     });
                 }
             }

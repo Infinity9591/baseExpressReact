@@ -3,7 +3,7 @@ const router = express.Router();
 const permissionsForRoleController = require('../../controllers/PermissionsForRoleController');
 const authorize = require('../../middlewares/authorization');
 
-router.get('/', permissionsForRoleController.index);
+router.get('/',  permissionsForRoleController.index);
 router.post('/addPermission', permissionsForRoleController.addPermissions);
 router.post(
     '/deletePermission',
