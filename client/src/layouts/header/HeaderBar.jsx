@@ -3,69 +3,25 @@ import {Button, Flex, Menu, theme} from 'antd';
 import logo from '../../assets/React.png';
 import SubMenu from 'antd/es/menu/SubMenu.js';
 import { useEffect, useState } from 'react';
-import axios from '../../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
 import {data, Link} from 'react-router-dom';
 import './HeaderBar.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMyVariable } from '../../redux/reducers/menuSlice.js';
-import {fetchTodos} from '../../redux/reducers/getDataPersonal.js'
+import { setMyVariable } from '../../redux/reducers/menuStateSlice.js';
+import {getPersonalData} from '../../redux/reducers/getPersonalDataSlice.js'
+import {setHeaderBarState} from '../../redux/reducers/headerBarStateSlice.js'
+import {setSideBarState} from '../../redux/reducers/sideBarStateSlice.js'
 
-const items = [
-    {
-        key: 1,
-        label: 'Công việc',
-        // path : '/work'
-    },
-    {
-        key: 2,
-        label: 'Phòng ban',
-        // path : '/department'
-    },
-    {
-        key: 3,
-        label: 'Nhân viên',
-        // path : '/user'
-    },
-    {
-        key: 4,
-        label: 'Quản lý tài khoản',
-        path: '/account',
-    },
-    {
-        key: 5,
-        label: 'Phân quyền',
-        // path : '/permission'
-    },
-    {
-        key: 6,
-        label: 'Chức vụ',
-        // path : '/position'
-    },
-];
-
-const HeaderBar = (props) => {
+const HeaderBar = () => {
     const [cookie, setCookie, removeCookie] = useCookies(['access-token']);
-
-    const [username, setUsername] = useState('');
-
-    const [datas, setDatas] = useState([]);
-
     const dispatch = useDispatch();
-    const state = useSelector((state) => state);
+    const menuState = useSelector((store) => store.menuState.state);
+    const personalData = useSelector((store) => store.personalData);
+    const headerBarState = useSelector((store) => store.headerBarState.state);
+    const sideBarState = useSelector((store) => store.sideBarState.state);
 
     useEffect(() => {
-        dispatch(fetchTodos());
-        axios
-            .get('/site/getPersonalInformation', {
-                // headers: {
-                //     Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                // },
-            })
-        // dispatch(fetchDataPersonal())
-            .then((res) => {
-                setDatas(res.data);
-            });
+        dispatch(getPersonalData());
     }, []);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -74,14 +30,20 @@ const HeaderBar = (props) => {
     const [selectedKeys, setSelectedKeys] = useState([]);
 
     const handleMenuClick = ({ key }) => {
-        setSelectedKeys([key]);
+        dispatch(setHeaderBarState(key));
         dispatch(setMyVariable(true));
+        // setSelectedKeys(headerBarState);
     };
 
     return (
         <>
             <Button onClick={() => {
-                console.log(state)}}/>
+                console.log(menuState);
+                console.log(personalData);
+                console.log(headerBarState);
+                console.log(sideBarState);
+            }}/>
+
             <Header
                 style={{
                     position: 'sticky',
@@ -108,31 +70,32 @@ const HeaderBar = (props) => {
                         flex: 1,
                     }}
                     onClick={handleMenuClick}
-                    selectedKeys={!props.selected ? [] : selectedKeys}
+                    selectedKeys={!menuState ? [] : headerBarState}
                 >
                     <SubMenu
                         key="user-menu"
-                        title={state.todo.data.username} // The title of the dropdown
+                        title={personalData.data.person_name}
                         style={{
                             marginLeft: 'auto',
                         }}
                     >
                         <Menu.Item key="edit-info">
                             <Link
-                                to="/site/editPersonalInformation"
-                                data={datas}
+                                to="/site/updatePersonalData"
+                                data={personalData.data}
                             >
                                 Quản lý thông tin người dùng
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="amen">
-                            <Link to="/site/changePassword" data={datas}>
+                            <Link to="/site/changePassword" data={personalData.data}>
                                 Đổi mật khẩu
                             </Link>
                         </Menu.Item>
                         <Menu.Item
                             key="logout"
                             onClick={() => {
+                                localStorage.clear();
                                 removeCookie('access-token');
                             }}
                         >

@@ -11,36 +11,19 @@ import {
 } from 'antd';
 import axios from '../../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
-import Create from '../user/create.jsx';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {getAccounts} from '../../redux/reducers/getAccountsSlice.js'
 
 const Index = () => {
     const [cookie, setCookie, removeCookie] = useCookies();
     const navigate = useNavigate();
-    // const [dataUsers, setDataUsers] = useState([]);
-    const [dataAccounts, setDataAccounts] = useState([]);
-    const [isModalCreateOpen, setIsModalCreateOpen] = useState(false);
     const [count, setCount] = useState(0);
     const [refreshKey, setRefreshKey] = useState(0);
-    const [loading, setLoading] = useState(false);
     const [editingRow, setEditingRow] = useState(null);
-    const [dataEdit, setDataEdit] = useState({
-        id : "",
-        name: "",
-        phone_number: "",
-        email: "",
-        address: "",
-        account_id: null,
-    });
-
-    const showModalCreate = () => {
-        setIsModalCreateOpen(true);
-    };
-
-    const handleCancelCreate = () => {
-        setIsModalCreateOpen(false);
-        setRefreshKey((prevKey) => prevKey + 1);
-    };
+    const [dataEdit, setDataEdit] = useState();
+    const dispatch = useDispatch();
+    const state = useSelector((state) => state.accounts);
 
     const handleEdit = (record) => {
         setEditingRow(record.id); // Bắt đầu chỉnh sửa hàng có ID là record.id
@@ -56,15 +39,15 @@ const Index = () => {
 
     };
     const handleSave = async (record) => {
-        // console.log(dataEdit);
         try {
-            await axios.post(
-                '/user/update',
-                dataEdit,
+            const {username, ...data} = dataEdit;
+            await axios.patch(
+                '/account/editInformation',
+                data,
                 {
-                    headers: {
-                        Authorization: 'Bearer ' + cookie['access-token'],
-                    },
+                    // headers: {
+                    //     Authorization: 'Bearer ' + cookie['access-token'],
+                    // },
                 },
             );
             notification.success({
@@ -73,7 +56,9 @@ const Index = () => {
             });
             setEditingRow(null); // Kết thúc chỉnh sửa
             setCount((prev) => prev + 1); // Làm mới dữ liệu
+            // console.log(data)
         } catch (error) {
+            console.log(error);
             notification.error({
                 message: 'Error',
                 description: 'Cập nhật tên thất bại!',
@@ -82,21 +67,10 @@ const Index = () => {
     };
 
     useEffect(() => {
+
         const fetchData = async () => {
             try {
-                setLoading(true);
-                // const responseUsers = await axios.get('/', {
-                //     headers: {
-                //         Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                //     },
-                // });
-                // setDataUsers(responseUsers.data);
-                const responseAccounts = await axios.get('/account', {
-                    headers: {
-                        Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                    },
-                });
-                setDataAccounts(responseAccounts.data);
+                dispatch(getAccounts());
             } catch (error) {
                 console.log(error)
                 navigate('/site/error');
@@ -104,12 +78,11 @@ const Index = () => {
                 //     message: 'Error',
                 //     description: 'Failed to fetch user data',
                 // });
-            } finally {
-                setLoading(false);
             }
         };
         fetchData();
-    }, [refreshKey, count]);
+    }, [refreshKey, count, dispatch]);
+
     return (
         <>
             <Divider
@@ -119,22 +92,10 @@ const Index = () => {
             >
                 Quản lý nhân viên
             </Divider>
-            <Button
-                onClick={() => {
-                    showModalCreate();
-                }}
-            >
-                Thêm nhân viên
-            </Button>
-            <Divider
-                style={{
-                    borderColor: '#7cb305',
-                    borderWidth: '1px',
-                }}
-            />
-            <Spin spinning={loading}>
+
+            <Spin spinning={state.isLoading}>
                 <Table
-                    dataSource={dataAccounts}
+                    dataSource={Array.isArray(state.data) ? state.data : []}
                     columns={[
                         {
                             title: 'STT',
@@ -344,12 +305,6 @@ const Index = () => {
                             ),
                         },
                     ]}
-                />
-                <Create
-                    key={count}
-                    open={isModalCreateOpen}
-                    handleCancelCreate={handleCancelCreate}
-                    dataAccounts={dataAccounts}
                 />
             </Spin>
         </>

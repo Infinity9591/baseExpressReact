@@ -3,19 +3,18 @@ import axios from '../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
 import { Button, Checkbox, Form, Input, notification, Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {getPersonalData} from '../redux/reducers/getPersonalDataSlice.js'
 
-const EditPersonalInformation = () => {
+const UpdatePersonalData = () => {
     const [cookie, setCookie, removeCookie] = useCookies();
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const [loading, setLoading] = useState(true);
     let datas = {};
-    const [formData, setFormData] = useState({
-        name: '',
-        phone_number: '',
-        email: '',
-        address: '',
-    });
+    const [formData, setFormData] = useState();
+    const dispatch = useDispatch();
+    const state = useSelector((state) => state.accounts);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -48,15 +47,8 @@ const EditPersonalInformation = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(
-                    '/site/getPersonalInformation',
-                    {
-                        headers: {
-                            Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                        },
-                    },
-                );
-                datas = response.data;
+                dispatch(getPersonalData());
+                datas = Array.isArray(state.data) ? state.data : [];
                 setFormData({
                     person_name: datas.person_name,
                     phone_number: datas.phone_number,
@@ -69,7 +61,7 @@ const EditPersonalInformation = () => {
                     email: datas.email,
                     address: datas.address,
                 });
-                console.log(formData);
+                // console.log(formData);
             } catch (error) {
                 notification.error({
                     message: 'Error',
@@ -84,7 +76,7 @@ const EditPersonalInformation = () => {
 
     return (
         <>
-            <Spin spinning={loading}>
+            <Spin spinning={state.isLoading}>
                 <Form
                     form={form}
                     name="basic"
@@ -153,4 +145,4 @@ const EditPersonalInformation = () => {
     );
 };
 
-export default EditPersonalInformation;
+export default UpdatePersonalData;

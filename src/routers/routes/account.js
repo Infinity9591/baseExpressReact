@@ -24,5 +24,10 @@ router.patch(
     authorize('update', 'accounts'),
     accountController.editRole,
 );
+router.patch(
+	"/editInformation",
+	authorize('update', 'accounts'),
+	accountController.editInformation
+)
 
 module.exports = router;

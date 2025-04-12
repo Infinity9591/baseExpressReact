@@ -58,9 +58,8 @@ class SiteController {
             res.status(500).json('error');
         }
     }
-    getPersonalInformation(req, res) {
+    getPersonalData(req, res) {
         try {
-            // res.json(req);
             accounts.findByPk(req.body.user.id, {
                 include : {
                     as : "role",
@@ -74,7 +73,7 @@ class SiteController {
         }
     }
 
-    updatePersonalInformation(req, res) {
+    updatePersonalData(req, res) {
         let data;
         try {
             accounts.findByPk(req.body.user.id).then((account) => {

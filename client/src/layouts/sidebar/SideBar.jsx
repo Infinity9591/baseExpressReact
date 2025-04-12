@@ -2,32 +2,27 @@ import Sider from 'antd/es/layout/Sider.js';
 import { ConfigProvider, Layout, Menu, notification, theme } from 'antd';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from '../../utils/axios.customize.js';
 import { useCookies } from 'react-cookie';
-import { useDispatch } from 'react-redux';
-import { setMyVariable } from '../../redux/reducers/menuSlice.js';
+import {useDispatch, useSelector} from 'react-redux';
+import { setMyVariable } from '../../redux/reducers/menuStateSlice.js';
+import { setSideBarState } from '../../redux/reducers/sideBarStateSlice.js';
+import {getPersonalData} from '../../redux/reducers/getPersonalDataSlice.js'
 
 const SideBar = (props) => {
     const [cookie, setCookie, removeCookie] = useCookies();
+    const dispatch = useDispatch();
 
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
-
-    const [data, setData] = useState();
+    const menuState = useSelector((store) => store.menuState.state);
+    const personalData = useSelector((store) => store.personalData);
+    const sideBarState = useSelector((store) => store.sideBarState.state);
 
     useEffect(() => {
-        const fetchData = async () => {
+        async () => {
             try {
-                const response = await axios.get(
-                    '/site/getPersonalInformation',
-                    {
-                        headers: {
-                            Authorization: 'Bearer ' + cookie['access-token'], //the token is a variable which holds the token
-                        },
-                    },
-                );
-                setData(response.data);
+                dispatch(getPersonalData());
             } catch (error) {
                 notification.error({
                     message: 'Error',
@@ -35,8 +30,8 @@ const SideBar = (props) => {
                 });
             }
         };
-        fetchData();
-    }, []);
+
+    }, [dispatch]);
 
     const items = [
         // {
@@ -68,16 +63,15 @@ const SideBar = (props) => {
             key: 5,
             label: 'Chức vụ',
             path: '/role',
-            show: data?.role.role_name === 'admin' ? true : false,
+            show: personalData?.data?.role?.role_name === 'admin' ? true : false,
         },
     ];
-
-    const dispatch = useDispatch();
     const [selectedKeys, setSelectedKeys] = useState([]);
 
     const handleMenuClick = ({ key }) => {
-        setSelectedKeys([key]);
+        dispatch(setSideBarState(key));
         dispatch(setMyVariable(false));
+        setSelectedKeys(sideBarState);
     };
 
     return (
@@ -101,7 +95,9 @@ const SideBar = (props) => {
             <Menu
                 mode="inline"
                 onClick={handleMenuClick}
-                selectedKeys={props.selected ? [] : selectedKeys}
+
+                selectedKeys={menuState ? [] : sideBarState }
+                // menuState === '' ? ["2"] :
                 style={{
                     height: '100%',
                     borderRight: 0,

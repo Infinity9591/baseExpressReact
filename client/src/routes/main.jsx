@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import EditPersonalInformation from '../site/editPersonalInformation.jsx';
+import UpdatePersonalData from '../site/updatePersonalData.jsx';
 import IndexUser from '../routes/user/index.jsx';
 import IndexAccount from '../routes/account/index.jsx';
 import IndexRole from '../routes/role/index.jsx';
@@ -30,12 +30,12 @@ function Main() {
                 >
                     <Routes>
                         <Route
-                            path="/site/editPersonalInformation"
-                            element={<EditPersonalInformation />}
+                            path="/site/updatePersonalData"
+                            element={<UpdatePersonalData />}
                         />
-                        <Route path="/user" element={<IndexUser />} />
-                        <Route path="/account" element={<IndexAccount />} />
-                        <Route path="/role" element={<IndexRole />} />
+                        {/*<Route path="/user" element={<IndexUser />} />*/}
+                        {/*<Route path="/account" element={<IndexAccount />} />*/}
+                        {/*<Route path="/role" element={<IndexRole />} />*/}
                         <Route path="/site/error" element={<ErrorPage />} />
                         <Route
                             path="/site/changePassword"

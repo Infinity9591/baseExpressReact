@@ -100,6 +100,20 @@ class AccountController {
             return res.status(500).send('error');
         }
     }
+
+    editInformation (req, res){
+        try {
+            accounts.findByPk(req.body.id)
+                .then((account) => {
+                    // res.status(200).json(account);
+                    account.update(req.body)
+                }).then (() => {
+                    res.status(200).json({ status: 'Success' });
+            })
+        } catch (e) {
+            return res.status(500).send('error');
+        }
+    }
 }
 
 module.exports = new AccountController();
